@@ -39,7 +39,7 @@ namespace RimWar.Utility
                 return Vector3.zero;
             }
             bool flag = warObject.Spawned && warObject.pather.Moving;
-            float d = 0.15f * Verse.Find.WorldGrid.averageTileSize;
+            float d = 0.15f * Verse.Find.WorldGrid.AverageTileSize;
             if (!flag || warObject.pather.nextTile == warObject.pather.Destination)
             {
                 int num = (!flag) ? warObject.Tile : warObject.pather.nextTile;
@@ -94,7 +94,7 @@ namespace RimWar.Utility
         private static bool DrawPosCollides(WarObject warObject)
         {
             Vector3 a = PatherTweenedPosRoot(warObject);
-            float num = Verse.Find.WorldGrid.averageTileSize * 0.2f;
+            float num = Verse.Find.WorldGrid.AverageTileSize * 0.2f;
             List<WarObject> warObjects = Utility.RW_Find.WarObjects();
             for (int i = 0; i < warObjects.Count; i++)
             {

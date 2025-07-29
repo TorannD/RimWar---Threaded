@@ -169,11 +169,11 @@ namespace RimWar.Utility
             {
                 num = 999999f;
             }
-            if (PawnGroupMakerUtility.TryGetRandomFactionForCombatPawnGroup(num, out parms.faction, (Faction f) => FactionCanBeGroupSource(f, map), allowNonHostileToPlayer: true, allowHidden: true, allowDefeated: true))
+            if (PawnGroupMakerUtility.TryGetRandomFactionForCombatPawnGroup(num, out parms.faction, (Faction f) => FactionCanBeGroupSource(f, parms), allowNonHostileToPlayer: true, allowHidden: true, allowDefeated: true))
             {
                 return true;
             }
-            if (PawnGroupMakerUtility.TryGetRandomFactionForCombatPawnGroup(num, out parms.faction, (Faction f) => FactionCanBeGroupSource(f, map, desperate: true), allowNonHostileToPlayer: true, allowHidden: true, allowDefeated: true))
+            if (PawnGroupMakerUtility.TryGetRandomFactionForCombatPawnGroup(num, out parms.faction, (Faction f) => FactionCanBeGroupSource(f, parms, desperate: true), allowNonHostileToPlayer: true, allowHidden: true, allowDefeated: true))
             {
                 return true;
             }

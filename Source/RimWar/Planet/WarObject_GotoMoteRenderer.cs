@@ -39,11 +39,11 @@ namespace RimWar.Planet
                 Color value = new Color(1f, 1f, 1f, 1f - num);
                 propertyBlock.SetColor(ShaderPropertyIDs.Color, value);
                 Vector3 pos = tileCenter;
-                float size = 0.8f * worldGrid.averageTileSize;
+                float size = 0.8f * worldGrid.AverageTileSize;
                 float altOffset = 0.018f;
                 Material material = cachedMaterial;
                 MaterialPropertyBlock materialPropertyBlock = propertyBlock;
-                WorldRendererUtility.DrawQuadTangentialToPlanet(pos, size, altOffset, material, false, false, materialPropertyBlock);
+                WorldRendererUtility.DrawQuadTangentialToPlanet(pos, size, altOffset, material, 0, false, false, materialPropertyBlock);
             }
         }
 

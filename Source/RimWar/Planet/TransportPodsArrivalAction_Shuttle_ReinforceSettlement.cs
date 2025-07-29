@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace RimWar.Planet
 {
-    public class TransportPodsArrivalAction_Shuttle_ReinforceSettlement : TransportPodsArrivalAction_TransportShip
+    public class TransportPodsArrivalAction_Shuttle_ReinforceSettlement : TransportersArrivalAction_TransportShip
     {
         private Settlement settlement;
 
@@ -27,7 +27,7 @@ namespace RimWar.Planet
             this.mapParent = _mapParent;
         }
 
-        public override void Arrived(List<ActiveDropPodInfo> pods, int tile)
+        public override void Arrived(List<ActiveTransporterInfo> pods, PlanetTile tile)
         {
             //Thing lookTarget = TransportPodsArrivalActionUtility.GetLookTarget(pods);
             if (transportShip == null || transportShip.Disposed)

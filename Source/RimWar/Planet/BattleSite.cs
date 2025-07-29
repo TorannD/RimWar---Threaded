@@ -21,7 +21,7 @@ namespace RimWar.Planet
             }
         }
 
-        public override void Tick()
+        protected override void Tick()
         {
             base.Tick();
             if (nextCombatTick < Find.TickManager.TicksGame)
@@ -174,9 +174,9 @@ namespace RimWar.Planet
             }
         }
 
-        public override IEnumerable<FloatMenuOption> GetTransportPodsFloatMenuOptions(IEnumerable<IThingHolder> pods, CompLaunchable representative)
+        public override IEnumerable<FloatMenuOption> GetTransportersFloatMenuOptions(IEnumerable<IThingHolder> pods, Action<PlanetTile, TransportersArrivalAction> representative)
         {
-            foreach (FloatMenuOption transportPodsFloatMenuOption in base.GetTransportPodsFloatMenuOptions(pods, representative))
+            foreach (FloatMenuOption transportPodsFloatMenuOption in base.GetTransportersFloatMenuOptions(pods, representative))
             {
                 yield return transportPodsFloatMenuOption;
             }
@@ -189,7 +189,7 @@ namespace RimWar.Planet
             }
         }
 
-        public override IEnumerable<FloatMenuOption> GetShuttleFloatMenuOptions(IEnumerable<IThingHolder> pods, Action<int, TransportPodsArrivalAction> launchAction)
+        public override IEnumerable<FloatMenuOption> GetShuttleFloatMenuOptions(IEnumerable<IThingHolder> pods, Action<PlanetTile, TransportersArrivalAction> launchAction)
         {
             foreach (FloatMenuOption shuttleFloatMenuOption in base.GetShuttleFloatMenuOptions(pods, launchAction))
             {
@@ -197,7 +197,7 @@ namespace RimWar.Planet
             }
             if (!base.HasMap)
             {
-                foreach (FloatMenuOption floatMenuOption in TransportPodsArrivalActionUtility.GetFloatMenuOptions(() => TransportPodsArrivalAction_JoinBattle.CanAttack(pods, this), () => new TransportPodsArrivalAction_Shuttle_JoinBattle(this, this), "AttackShuttle".Translate(Label), launchAction, base.Tile))
+                foreach (FloatMenuOption floatMenuOption in TransportersArrivalActionUtility.GetFloatMenuOptions(() => TransportPodsArrivalAction_JoinBattle.CanAttack(pods, this), () => new TransportPodsArrivalAction_Shuttle_JoinBattle(this, this), "AttackShuttle".Translate(Label), launchAction, base.Tile))
                 {
                     yield return floatMenuOption;
                 }

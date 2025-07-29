@@ -41,10 +41,10 @@ namespace RimWar.Harmony
             //                    typeof(List<ActiveDropPodInfo>),
             //                    typeof(int)
             //    }, null), null, new HarmonyMethod(patchType, "ShuttleArrived_SettlementHasAttackers_Postfix", null), null);
-            harmonyInstance.Patch(AccessTools.Method(typeof(TransportPodsArrivalAction_AttackSettlement), "Arrived", new Type[]
+            harmonyInstance.Patch(AccessTools.Method(typeof(TransportersArrivalAction_AttackSettlement), "Arrived", new Type[]
                 {
-                                typeof(List<ActiveDropPodInfo>),
-                                typeof(int)
+                                typeof(List<ActiveTransporterInfo>),
+                                typeof(PlanetTile)
                 }, null), null, new HarmonyMethod(patchType, "PodsArrived_SettlementHasAttackers_Postfix", null), null);
             harmonyInstance.Patch(AccessTools.Method(typeof(RimWorld.Planet.SettlementUtility), "AttackNow", new Type[]
                 {
@@ -56,7 +56,7 @@ namespace RimWar.Harmony
                 }, null), null, new HarmonyMethod(patchType, "Settlement_InspectString_WithPoints_Postfix", null), null);
             harmonyInstance.Patch(AccessTools.Method(typeof(Caravan_PathFollower), "StartPath", new Type[]
                 {
-                    typeof(int),
+                    typeof(PlanetTile),
                     typeof(CaravanArrivalAction),
                     typeof(bool),
                     typeof(bool)
@@ -79,7 +79,7 @@ namespace RimWar.Harmony
             harmonyInstance.Patch(AccessTools.Method(typeof(Settlement), "GetShuttleFloatMenuOptions", new Type[]
                 {
                     typeof(IEnumerable<IThingHolder>),
-                    typeof(Action<int, TransportPodsArrivalAction>)
+                    typeof(Action<PlanetTile, TransportersArrivalAction>)
                 }, null), null, new HarmonyMethod(patchType, "Settlement_ShuttleReinforce_Postfix", null), null);
             harmonyInstance.Patch(AccessTools.Method(typeof(ThingSetMaker), "Generate", new Type[]
                 {
@@ -98,17 +98,18 @@ namespace RimWar.Harmony
             //    new HarmonyMethod(patchType, nameof(RimWar_CommsConsoleOptions_Transpiler)));
 
             //Prefix
-            harmonyInstance.Patch(AccessTools.Method(typeof(FactionGiftUtility), "GiveGift", new Type[]
-                {
-                    typeof(List<Tradeable>),
-                    typeof(Faction),
-                    typeof(GlobalTargetInfo)
-                }, null), new HarmonyMethod(patchType, "GiveGiftAsRimWarPoints_Prefix", null), null, null);
+
             //harmonyInstance.Patch(AccessTools.Method(typeof(FactionGiftUtility), "GiveGift", new Type[]
             //    {
             //        typeof(List<ActiveDropPodInfo>),
             //        typeof(Settlement)
             //    }, null), new HarmonyMethod(patchType, "GivePodGiftAsRimWarPoints_Prefix", null), null, null);
+            harmonyInstance.Patch(AccessTools.Method(typeof(FactionGiftUtility), "GiveGift", new Type[]
+                {
+                                typeof(List<Tradeable>),
+                                typeof(Faction),
+                                typeof(GlobalTargetInfo)
+                }, null), new HarmonyMethod(patchType, "GiveGiftAsRimWarPoints_Prefix", null), null, null);
             harmonyInstance.Patch(AccessTools.Method(typeof(IncidentWorker), "TryExecute", new Type[]
                 {
                     typeof(IncidentParms)
@@ -127,9 +128,9 @@ namespace RimWar.Harmony
                 {
                     typeof(IEnumerable<Pawn>),
                     typeof(Faction),
-                    typeof(int),
-                    typeof(int),
-                    typeof(int),
+                    typeof(PlanetTile),
+                    typeof(PlanetTile),
+                    typeof(PlanetTile),
                     typeof(bool)
                 }, null), new HarmonyMethod(patchType, "ExitMapPostBattle_Prefix", null), null, null);
             //Unused
@@ -269,13 +270,13 @@ namespace RimWar.Harmony
             }
         }
 
-        public static void Settlement_ShuttleReinforce_Postfix(Settlement __instance, IEnumerable<IThingHolder> pods, Action<int, TransportPodsArrivalAction> launchAction, ref IEnumerable<FloatMenuOption> __result)
+        public static void Settlement_ShuttleReinforce_Postfix(Settlement __instance, IEnumerable<IThingHolder> pods, Action<PlanetTile, TransportersArrivalAction> launchAction, ref IEnumerable<FloatMenuOption> __result)
         {
             RimWarSettlementComp rwsc = __instance.GetComponent<RimWarSettlementComp>();
             if(rwsc != null && rwsc.Reinforceable)
             {
                 var fmoList = __result.ToList();
-                foreach (FloatMenuOption floatMenuOption in TransportPodsArrivalActionUtility.GetFloatMenuOptions(() => TransportPodsArrivalAction_ReinforceSettlement.CanReinforce(pods, __instance), () => new TransportPodsArrivalAction_Shuttle_ReinforceSettlement(__instance, __instance), "RW_ReinforceShuttle".Translate(__instance.Label), launchAction, __instance.Tile))
+                foreach (FloatMenuOption floatMenuOption in TransportersArrivalActionUtility.GetFloatMenuOptions(() => TransportPodsArrivalAction_ReinforceSettlement.CanReinforce(pods, __instance), () => new TransportPodsArrivalAction_Shuttle_ReinforceSettlement(__instance, __instance), "RW_ReinforceShuttle".Translate(__instance.Label), launchAction, __instance.Tile))
                 {
                     fmoList.Add(floatMenuOption);
                 }
@@ -283,7 +284,7 @@ namespace RimWar.Harmony
             }
         }
 
-        public static void ShuttleArrived_SettlementHasAttackers_Postfix(List<ActiveDropPodInfo> pods, int tile, MapParent ___mapParent)
+        public static void ShuttleArrived_SettlementHasAttackers_Postfix(List<ActiveTransporterInfo> pods, int tile, MapParent ___mapParent)
         {
             if (___mapParent != null && ___mapParent.HasMap)
             {
@@ -321,7 +322,7 @@ namespace RimWar.Harmony
             //}
         }
 
-        public static bool ExitMapPostBattle_Prefix(IEnumerable<Pawn> pawns, Faction faction, int exitFromTile, int directionTile, ref Caravan __result)
+        public static bool ExitMapPostBattle_Prefix(IEnumerable<Pawn> pawns, Faction faction, PlanetTile exitFromTile, PlanetTile directionTile, PlanetTile destinationTile, bool sendMessage, ref Caravan __result)
         {
             Settlement s = Find.World.worldObjects.SettlementAt(exitFromTile);
             if(s != null)
@@ -387,7 +388,7 @@ namespace RimWar.Harmony
             return true;
         }
 
-        public static void PodsArrived_SettlementHasAttackers_Postfix(List<ActiveDropPodInfo> pods, int tile, Settlement ___settlement)
+        public static void PodsArrived_SettlementHasAttackers_Postfix(List<ActiveTransporterInfo> transporters, PlanetTile tile, Settlement ___settlement)
         {
             if(___settlement != null && ___settlement.HasMap)
             {
@@ -493,11 +494,12 @@ namespace RimWar.Harmony
         public static void WorldCapitolOverlay()
         {
             List<Settlement> sList = Find.WorldObjects.Settlements;
-            float averageTileSize = Find.WorldGrid.averageTileSize;
-            float transitionPct = ExpandableWorldObjectsUtility.TransitionPct;
+            float averageTileSize = Find.WorldGrid.AverageTileSize;
+            
             float num = (Find.WorldCameraDriver.altitude / 100f) -.75f;
             foreach (Settlement wos in sList)
             {
+                float transitionPct = ExpandableWorldObjectsUtility.TransitionPct(wos);
                 RimWarSettlementComp rwsc = wos.GetComponent<RimWarSettlementComp>();
                 if(rwsc != null)
                 {
@@ -635,7 +637,7 @@ namespace RimWar.Harmony
             }
         }
 
-        public static void Pather_StartPath_WarObjects(Caravan_PathFollower __instance, Caravan ___caravan, int destTile, CaravanArrivalAction arrivalAction, ref bool __result, bool repathImmediately = false, bool resetPauseStatus = true)
+        public static void Pather_StartPath_WarObjects(Caravan_PathFollower __instance, Caravan ___caravan, PlanetTile destTile, CaravanArrivalAction arrivalAction, ref bool __result, bool repathImmediately = false, bool resetPauseStatus = true)
         {
             if (__result == true)
             {
@@ -997,7 +999,7 @@ namespace RimWar.Harmony
         [HarmonyPatch(typeof(SettlementProximityGoodwillUtility), "AppendProximityGoodwillOffsets", null)]
         public class SettlementProximity_NoVassalDegradation_Patch
         {
-            public static void Postfix(int tile, ref List<Pair<Settlement, int>> outOffsets, bool ignoreIfAlreadyMinGoodwill, bool ignorePermanentlyHostile)
+            public static void Postfix(PlanetTile tile, ref List<Pair<Settlement, int>> outOffsets, bool ignoreIfAlreadyMinGoodwill, bool ignorePermanentlyHostile)
             {
                 List<Pair<Settlement, int>> rem = new List<Pair<Settlement, int>>(); 
                 for(int i = 0; i < outOffsets.Count; i++)

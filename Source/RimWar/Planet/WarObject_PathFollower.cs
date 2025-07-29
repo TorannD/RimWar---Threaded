@@ -17,16 +17,16 @@ namespace RimWar.Planet
         private bool moving;
         private bool paused;
 
-        public int nextTile = -1;
-        public int previousTileForDrawingIfInDoubt = -1;
-        private int destTile;
+        public PlanetTile nextTile = PlanetTile.Invalid;
+        public PlanetTile previousTileForDrawingIfInDoubt = PlanetTile.Invalid;
+        private PlanetTile destTile;
 
         public float nextTileCostLeft;
         public float nextTileCostTotal = 1f;
 
         public WorldPath curPath;
 
-        public int lastPathedTargetTile;
+        public PlanetTile lastPathedTargetTile;
         public const int MaxMoveTicks = 60000;
 
         private const int MaxCheckAheadNodes = 20;
@@ -36,7 +36,7 @@ namespace RimWar.Planet
         public const float DefaultPathCostToPayPerTick = 1f;
         public const int FinalNoRestPushMaxDurationTicks = 10000;
 
-        public int Destination => destTile;
+        public PlanetTile Destination => destTile;
 
         public bool Moving => moving;
         public bool MovingNow => Moving && !Paused && !warObject.CantMove;
@@ -56,7 +56,7 @@ namespace RimWar.Planet
             }
         }
 
-        public bool StartPath(int destTile, bool repathImmediately = false, bool resetPauseStatus = true)
+        public bool StartPath(PlanetTile destTile, bool repathImmediately = false, bool resetPauseStatus = true)
         {
             if (resetPauseStatus)
             {
@@ -76,11 +76,11 @@ namespace RimWar.Planet
                 return false;
             }
             this.destTile = destTile;
-            if (nextTile < 0 || !IsNextTilePassable())
+            if (nextTile.Valid || !IsNextTilePassable())
             {
                 nextTile = warObject.Tile;
                 nextTileCostLeft = 0f;
-                previousTileForDrawingIfInDoubt = -1;
+                previousTileForDrawingIfInDoubt = PlanetTile.Invalid;
             }
             if (AtDestinationPosition())
             {
@@ -188,7 +188,7 @@ namespace RimWar.Planet
 
         private bool TryRecoverFromUnwalkablePosition()
         {
-            if (GenWorldClosest.TryFindClosestTile(warObject.Tile, (int t) => IsPassable(t), out int foundTile))
+            if (GenWorldClosest.TryFindClosestTile(warObject.Tile, (PlanetTile t) => IsPassable(t), out PlanetTile foundTile))
             {
                 Log.Warning(warObject + " on unwalkable tile " + warObject.Tile + ". Teleporting to " + foundTile);
                 warObject.Tile = foundTile;
@@ -251,7 +251,7 @@ namespace RimWar.Planet
             else
             {
                 nextTile = curPath.ConsumeNextNode();
-                previousTileForDrawingIfInDoubt = -1;
+                previousTileForDrawingIfInDoubt = PlanetTile.Invalid;
                 if (Verse.Find.World.Impassable(nextTile))
                 {
                     Log.Error(warObject + " entering " + nextTile + " which is unwalkable.");
@@ -354,12 +354,12 @@ namespace RimWar.Planet
 
         private WorldPath GenerateNewPath()
         {
-            int num = (!moving || nextTile < 0 || !IsNextTilePassable()) ? warObject.Tile : nextTile;
+            PlanetTile num = (moving && nextTile.Valid && IsNextTilePassable()) ? nextTile : warObject.Tile;
             lastPathedTargetTile = destTile;
 
-            try
-            {
-                WorldPath worldPath = Verse.Find.WorldPathFinder.FindPath(num, destTile, null);
+            //try
+            //{
+                WorldPath worldPath = num.Layer.Pather.FindPath(num, destTile, null); // Verse.Find.WorldPathFinder.FindPath(num, destTile, null);
                 if (worldPath.Found && num != warObject.Tile)
                 {
                     if (worldPath.NodesLeftCount >= 2 && worldPath.Peek(1) == warObject.Tile)
@@ -378,12 +378,12 @@ namespace RimWar.Planet
                     }
                 }
                 return worldPath;
-            }
-            catch
-            {
+            //}
+            //catch
+            //{
                 warObject.pauseFor = 10;
                 return new WorldPath();
-            }
+            //}
             
         }
 

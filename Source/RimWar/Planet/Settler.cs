@@ -128,7 +128,7 @@ namespace RimWar.Planet
         //ArrivalAction
         //public override int NextSearchTickIncrement => Rand.Range(1000, 3000);
 
-        public override void Tick()
+        protected override void Tick()
         {
             base.Tick();
             if (DestinationTarget != null)

@@ -1129,14 +1129,14 @@ namespace RimWar.Planet
             return null;
         }
 
-        public static int GetValidBattleSiteTile(int tile)
+        public static int GetValidBattleSiteTile(PlanetTile tile)
         {
-            List<int> validTiles = new List<int>();
+            List<PlanetTile> validTiles = new List<PlanetTile>();
             validTiles.Clear();
-            List<int> tmpTiles = new List<int>();
+            List<PlanetTile> tmpTiles = new List<PlanetTile>();
             tmpTiles.Clear();
             tmpTiles.Add(tile);
-            List<int> adjacentTiles = new List<int>();
+            List<PlanetTile> adjacentTiles = new List<PlanetTile>();
             adjacentTiles.Clear();
             Find.WorldGrid.GetTileNeighbors(tile, adjacentTiles);
             tmpTiles.AddRange(adjacentTiles);
@@ -1157,9 +1157,9 @@ namespace RimWar.Planet
                     }
                 }
                 Tile t = Find.WorldGrid[tmpTiles[i]];
-                if (t.biome != null)
+                if (t.PrimaryBiome != null)
                 {
-                    if(!t.biome.canBuildBase)
+                    if(!t.PrimaryBiome.canBuildBase)
                     {
                         tileValid = false;
                     }
@@ -1533,7 +1533,7 @@ namespace RimWar.Planet
             RW_LetterMaker.Archive_RWLetter(let);
         }
 
-        public static void AttackBattleSite(Caravan car, BattleSite bs, List<ActiveDropPodInfo> pods = null, PawnsArrivalModeDef arrivalMode = null)
+        public static void AttackBattleSite(Caravan car, BattleSite bs, List<ActiveTransporterInfo> pods = null, PawnsArrivalModeDef arrivalMode = null)
         {
             if (!bs.HasMap)
             {
@@ -1548,7 +1548,7 @@ namespace RimWar.Planet
             }
         }
 
-        private static void AttackBattleSiteNow(Caravan car, BattleSite bs, List<ActiveDropPodInfo> pods = null, PawnsArrivalModeDef arrivalMode = null)
+        private static void AttackBattleSiteNow(Caravan car, BattleSite bs, List<ActiveTransporterInfo> pods = null, PawnsArrivalModeDef arrivalMode = null)
         {
             bool num = !bs.HasMap;
             Map orGenerateMap = GetOrGenerateMapUtility.GetOrGenerateMap(bs.Tile, null);
@@ -1575,9 +1575,9 @@ namespace RimWar.Planet
             }
             else if(pods != null && arrivalMode != null)
             {
-                Thing lookTarget = TransportPodsArrivalActionUtility.GetLookTarget(pods);
+                Thing lookTarget = TransportersArrivalActionUtility.GetLookTarget(pods);
                 Find.LetterStack.ReceiveLetter(letterLabel, letterText, LetterDefOf.NeutralEvent, lookTarget, null);
-                arrivalMode.Worker.TravelingTransportPodsArrived(pods, orGenerateMap);
+                arrivalMode.Worker.TravellingTransportersArrived(pods, orGenerateMap);
                 //IntVec3 near = orGenerateMap.AllCells.RandomElement();
                 //if (arrivalMode == PawnsArrivalModeDefOf.CenterDrop)
                 //{

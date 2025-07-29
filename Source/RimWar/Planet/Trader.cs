@@ -86,7 +86,7 @@ namespace RimWar.Planet
 
         public override float ScanRange => 1.6f;
 
-        public override void Tick()
+        protected override void Tick()
         {
             base.Tick();            
         }
@@ -205,7 +205,7 @@ namespace RimWar.Planet
                                 Action delay4 = new Action(delegate
                                 {
                                     //Log.Message("delaying trader 4 hours");
-                                    int tile = DestinationTarget.Tile;
+                                    PlanetTile tile = DestinationTarget.Tile;
                                     while (tile == DestinationTarget.Tile)
                                     {
                                         TileFinder.TryFindPassableTileWithTraversalDistance(this.Tile, 1, 1, out tile);
@@ -220,7 +220,7 @@ namespace RimWar.Planet
                                 });
                                 Action delay12 = new Action(delegate
                                 {
-                                    int tile = DestinationTarget.Tile;
+                                    PlanetTile tile = DestinationTarget.Tile;
                                     while (tile == DestinationTarget.Tile)
                                     {
                                         TileFinder.TryFindPassableTileWithTraversalDistance(this.Tile, 1, 1, out tile);
@@ -235,7 +235,7 @@ namespace RimWar.Planet
                                 });
                                 Action reject = new Action(delegate
                                 {
-                                    int tile = DestinationTarget.Tile;
+                                    PlanetTile tile = DestinationTarget.Tile;
                                     while (tile == DestinationTarget.Tile)
                                     {
                                         TileFinder.TryFindPassableTileWithTraversalDistance(this.Tile, 1, 1, out tile);

@@ -24,7 +24,7 @@ namespace RimWar.Planet
             Scribe_Values.Look<int>(ref this.ticksPerMove, "ticksPerMove", 3300, false);                       
         }
 
-        public override void Tick()
+        protected override void Tick()
         {
             base.Tick();
         }

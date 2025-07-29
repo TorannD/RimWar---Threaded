@@ -22,7 +22,7 @@ namespace RimWar.Planet
             Scribe_Values.Look<int>(ref this.ticksPerMove, "ticksPerMove", 2500, false);                       
         }
 
-        public override void Tick()
+        protected override void Tick()
         {
             base.Tick();
             if(Find.TickManager.TicksGame % this.searchTick == 0)

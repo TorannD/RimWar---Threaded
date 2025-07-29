@@ -767,7 +767,7 @@ namespace RimWar.Planet
                             {
                                 if (rwdTown.RimWarPoints <= maxPts)
                                 {
-                                    float pts = (Rand.Range(2f, 3f)) + WorldUtility.GetBiomeMultiplier(Find.WorldGrid[rwdTown.parent.Tile].biome); //.1f - 3.5f
+                                    float pts = (Rand.Range(2f, 3f)) + WorldUtility.GetBiomeMultiplier(Find.WorldGrid[rwdTown.parent.Tile].PrimaryBiome); //.1f - 3.5f
                                     pts = pts * mult * WorldUtility.GetFactionTechLevelMultiplier(rwd.RimWarFaction) * rwd.growthAttribute * settingsref.settlementGrowthRate;
                                     rwdTown.RimWarPoints += Mathf.RoundToInt(Mathf.Clamp(pts, 1f, 100f));
                                     if(rwdTown.bonusGrowthCount > 0)
@@ -1953,12 +1953,12 @@ namespace RimWar.Planet
                 tmpTiles.Clear();
                 for (int i = 0; i < 5; i++)
                 {
-                    int tile = -1;
+                    PlanetTile tile = -1;
                     TileFinder.TryFindPassableTileWithTraversalDistance(parentSettlement.Tile, 10, targetRange, out tile);
                     if (tile != -1)
                     {
                         Tile t = Find.WorldGrid[tile];
-                        if (t.biome != null && !t.biome.isExtremeBiome && t.biome.canBuildBase)
+                        if (t.PrimaryBiome != null && !t.PrimaryBiome.isExtremeBiome && t.PrimaryBiome.canBuildBase)
                         {
                             tmpTiles.Add(tile);
                         }
@@ -2025,12 +2025,12 @@ namespace RimWar.Planet
                 tmpTiles.Clear();
                 for (int i = 0; i < 5; i++)
                 {
-                    int tile = -1;
+                    PlanetTile tile = -1;
                     TileFinder.TryFindPassableTileWithTraversalDistance(parentSettlement.Tile, 10, targetRange, out tile);
                     if (tile != -1)
                     {
                         Tile t = Find.WorldGrid[tile];
-                        if (t.biome != null && !t.biome.isExtremeBiome && t.biome.canBuildBase)
+                        if (t.PrimaryBiome != null && !t.PrimaryBiome.isExtremeBiome && t.PrimaryBiome.canBuildBase)
                         {                            
                             tmpTiles.Add(tile);
                         }

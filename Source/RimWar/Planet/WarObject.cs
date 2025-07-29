@@ -460,7 +460,7 @@ namespace RimWar.Planet
         //NextMoveTickIncrement (default is settings based)
         //ArrivalAction
 
-        public override void Tick()
+        protected override void Tick()
         {
             base.Tick();
             if(this.PointDamage > 0 && Find.TickManager.TicksGame % 1001 == 0)
@@ -781,7 +781,7 @@ namespace RimWar.Planet
 
             if (pather.Moving && pauseFor <=0)
             {
-                float num6 = (float)Utility.ArrivalTimeEstimator.EstimatedTicksToArrive(base.Tile, pather.Destination, this.TicksPerMove) / 60000f;
+                float num6 = (float)Utility.ArrivalTimeEstimator.EstimatedTicksToArrive(base.Tile, pather.Destination, this) / 60000f;
                 if (stringBuilder.Length != 0)
                 {
                     stringBuilder.AppendLine();

@@ -7,10 +7,12 @@ using System.Linq;
 
 namespace RimWar.Planet
 {
-    public class TransportPodsArrivalAction_JoinBattle : TransportPodsArrivalAction
+    public class TransportPodsArrivalAction_JoinBattle : TransportersArrivalAction
     {
         private BattleSite bs;
         private PawnsArrivalModeDef arrivalMode;
+
+        public override bool GeneratesMap => true;
 
         public override void ExposeData()
         {
@@ -19,7 +21,7 @@ namespace RimWar.Planet
             Scribe_Defs.Look(ref arrivalMode, "arrivalMode");
         }
 
-        public override bool ShouldUseLongEvent(List<ActiveDropPodInfo> pods, int tile)
+        public override bool ShouldUseLongEvent(List<ActiveTransporterInfo> pods, PlanetTile tile)
         {
             return !bs.HasMap;
         }
@@ -34,7 +36,7 @@ namespace RimWar.Planet
             this.arrivalMode = _arrivalMode;
         }
 
-        public override FloatMenuAcceptanceReport StillValid(IEnumerable<IThingHolder> pods, int destinationTile)
+        public override FloatMenuAcceptanceReport StillValid(IEnumerable<IThingHolder> pods, PlanetTile destinationTile)
         {
             FloatMenuAcceptanceReport floatMenuAcceptanceReport = base.StillValid(pods, destinationTile);
             if (!(bool)floatMenuAcceptanceReport)
@@ -54,7 +56,7 @@ namespace RimWar.Planet
             {
                 return false;
             }
-            if (!TransportPodsArrivalActionUtility.AnyNonDownedColonist(pods))
+            if (!TransportersArrivalActionUtility.AnyNonDownedColonist(pods))
             {
                 return false;
             }
@@ -65,7 +67,7 @@ namespace RimWar.Planet
             return true;
         }
 
-        public static IEnumerable<FloatMenuOption> GetFloatMenuOptions(CompLaunchable representative, IEnumerable<IThingHolder> pods, BattleSite bs)
+        public static IEnumerable<FloatMenuOption> GetFloatMenuOptions(Action<PlanetTile, TransportersArrivalAction> representative, IEnumerable<IThingHolder> pods, BattleSite bs)
         {
             //if (representative.parent.TryGetComp<CompShuttle>() != null)
             //{
@@ -76,20 +78,20 @@ namespace RimWar.Planet
             //}
             //else
             //{
-                foreach (FloatMenuOption floatMenuOption2 in TransportPodsArrivalActionUtility.GetFloatMenuOptions(() => CanAttack(pods, bs), () => new TransportPodsArrivalAction_JoinBattle(bs, PawnsArrivalModeDefOf.EdgeDrop), "AttackAndDropAtEdge".Translate(bs.Label), representative, bs.Tile))
+                foreach (FloatMenuOption floatMenuOption2 in TransportersArrivalActionUtility.GetFloatMenuOptions(() => CanAttack(pods, bs), () => new TransportPodsArrivalAction_JoinBattle(bs, PawnsArrivalModeDefOf.EdgeDrop), "AttackAndDropAtEdge".Translate(bs.Label), representative, bs.Tile))
                 {
                     yield return floatMenuOption2;
                 }
-                foreach (FloatMenuOption floatMenuOption3 in TransportPodsArrivalActionUtility.GetFloatMenuOptions(() => CanAttack(pods, bs), () => new TransportPodsArrivalAction_JoinBattle(bs, PawnsArrivalModeDefOf.CenterDrop), "AttackAndDropInCenter".Translate(bs.Label), representative, bs.Tile))
+                foreach (FloatMenuOption floatMenuOption3 in TransportersArrivalActionUtility.GetFloatMenuOptions(() => CanAttack(pods, bs), () => new TransportPodsArrivalAction_JoinBattle(bs, PawnsArrivalModeDefOf.CenterDrop), "AttackAndDropInCenter".Translate(bs.Label), representative, bs.Tile))
                 {
                     yield return floatMenuOption3;
                 }
             //}
         }
 
-        public override void Arrived(List<ActiveDropPodInfo> pods, int tile)
+        public override void Arrived(List<ActiveTransporterInfo> pods, PlanetTile tile)
         {
-            Thing lookTarget = TransportPodsArrivalActionUtility.GetLookTarget(pods);
+            Thing lookTarget = TransportersArrivalActionUtility.GetLookTarget(pods);
             bool num = !bs.HasMap;
             Map orGenerateMap = GetOrGenerateMapUtility.GetOrGenerateMap(bs.Tile, null);
             TaggedString letterLabel = "LetterLabelCaravanEnteredEnemyBase".Translate();
@@ -101,7 +103,7 @@ namespace RimWar.Planet
                 PawnRelationUtility.Notify_PawnsSeenByPlayer_Letter(orGenerateMap.mapPawns.AllPawns, ref letterLabel, ref letterText, "LetterRelatedPawnsInMapWherePlayerLanded".Translate(Faction.OfPlayer.def.pawnsPlural), informEvenIfSeenBefore: true);
             }
             Find.LetterStack.ReceiveLetter(letterLabel, letterText, LetterDefOf.NeutralEvent, lookTarget);
-            arrivalMode.Worker.TravelingTransportPodsArrived(pods, orGenerateMap);
+            arrivalMode.Worker.TravellingTransportersArrived(pods, orGenerateMap);
             IncidentUtility.GenerateSiteUnits(bs, orGenerateMap);
         }
     }

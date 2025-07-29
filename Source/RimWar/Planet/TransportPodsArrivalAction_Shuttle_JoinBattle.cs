@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace RimWar.Planet
 {
-    public class TransportPodsArrivalAction_Shuttle_JoinBattle : TransportPodsArrivalAction_TransportShip
+    public class TransportPodsArrivalAction_Shuttle_JoinBattle : TransportersArrivalAction_TransportShip
     {
         private BattleSite bs;
 
@@ -80,7 +80,7 @@ namespace RimWar.Planet
         //    }
         //}
 
-        public override void Arrived(List<ActiveDropPodInfo> pods, int tile)
+        public override void Arrived(List<ActiveTransporterInfo> pods, PlanetTile tile)
         {
             //Thing lookTarget = TransportPodsArrivalActionUtility.GetLookTarget(pods);
             if (transportShip == null || transportShip.Disposed)

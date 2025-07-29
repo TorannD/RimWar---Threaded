@@ -143,7 +143,16 @@ namespace RimWar.Utility
                 wos = rwd.ClosestSettlementTo(map.Tile, minPoints);
                 if (wos != null)
                 {
-                    daysToArrive = (float)Utility.ArrivalTimeEstimator.EstimatedTicksToArrive(wos.Tile, map.Tile, (int)(2000f / rwd.movementAttribute)) / 60000f;
+                    // Try to find an existing WarObject of the right type for estimation
+                    WarObject existingUnit = rwd.FactionUnits.FirstOrDefault(wo => wo is Scout);
+                    if (existingUnit != null)
+                    {
+                        daysToArrive = (float)Utility.ArrivalTimeEstimator.EstimatedTicksToArrive(wos.Tile, map.Tile, existingUnit) / 60000f;
+                    }
+                    else
+                    {
+                        daysToArrive = Find.WorldGrid.TraversalDistanceBetween(wos.Tile, map.Tile) * (int)(2000f / rwd.movementAttribute) / 60000f;
+                    }
                 }
             }
             string text = "RequestMilitaryAid".Translate(requestCost);
@@ -234,7 +243,16 @@ namespace RimWar.Utility
                 wos = rwd.ClosestSettlementTo(map.Tile, minPoints);
                 if (wos != null)
                 {
-                    daysToArrive = (float)Utility.ArrivalTimeEstimator.EstimatedTicksToArrive(wos.Tile, map.Tile, (int)(2800f * (1f / rwd.movementAttribute))) / 60000f;
+                    // Try to find an existing WarObject of the right type for estimation
+                    WarObject existingUnit = rwd.FactionUnits.FirstOrDefault(wo => wo is Warband);
+                    if (existingUnit != null)
+                    {
+                        daysToArrive = (float)Utility.ArrivalTimeEstimator.EstimatedTicksToArrive(wos.Tile, map.Tile, existingUnit) / 60000f;
+                    }
+                    else
+                    {
+                        daysToArrive = Find.WorldGrid.TraversalDistanceBetween(wos.Tile, map.Tile) * (int)(2800f / rwd.movementAttribute) / 60000f;
+                    }
                 }
             }
             string text = "RequestMilitaryAid".Translate(requestCost);
@@ -325,7 +343,16 @@ namespace RimWar.Utility
                 wos = rwd.ClosestSettlementTo(map.Tile, minPoints);
                 if (wos != null)
                 {
-                    daysToArrive = (float)Utility.ArrivalTimeEstimator.EstimatedTicksToArrive(wos.Tile, map.Tile, 100) / 60000f;
+                    // Try to find an existing WarObject of the right type for estimation
+                    WarObject existingUnit = rwd.FactionUnits.FirstOrDefault(wo => wo is LaunchedWarband);
+                    if (existingUnit != null)
+                    {
+                        daysToArrive = (float)Utility.ArrivalTimeEstimator.EstimatedTicksToArrive(wos.Tile, map.Tile, existingUnit) / 60000f;
+                    }
+                    else
+                    {
+                        daysToArrive = Find.WorldGrid.TraversalDistanceBetween(wos.Tile, map.Tile) * (int)(100f / rwd.movementAttribute) / 60000f;
+                    }
                 }
             }
             string text = "RequestMilitaryAid".Translate(requestCost);
@@ -424,7 +451,16 @@ namespace RimWar.Utility
                 wos = rwd.ClosestSettlementTo(map.Tile, 200);
                 if (wos != null)
                 {
-                    daysToArrive = (float)Utility.ArrivalTimeEstimator.EstimatedTicksToArrive(wos.Tile, map.Tile, (int)(2500f / rwd.movementAttribute)) / 60000f;
+                    // Try to find an existing WarObject of the right type for estimation
+                    WarObject existingUnit = rwd.FactionUnits.FirstOrDefault(wo => wo is Trader);
+                    if (existingUnit != null)
+                    {
+                        daysToArrive = (float)Utility.ArrivalTimeEstimator.EstimatedTicksToArrive(wos.Tile, map.Tile, existingUnit) / 60000f;
+                    }
+                    else
+                    {
+                        daysToArrive = Find.WorldGrid.TraversalDistanceBetween(wos.Tile, map.Tile) * (int)(2500f / rwd.movementAttribute) / 60000f;
+                    }
                 }
             }
             TaggedString taggedString = "RequestTrader".Translate(requestCost);

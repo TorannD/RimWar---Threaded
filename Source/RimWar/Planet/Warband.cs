@@ -101,7 +101,7 @@ namespace RimWar.Planet
         //public override int NextSearchTickIncrement => Rand.Range(500, 600);
         //public override float ScanRange => 1f;
 
-        public override void Tick()
+        protected override void Tick()
         {
             base.Tick();            
         }
