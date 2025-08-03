@@ -51,7 +51,7 @@ namespace RimWar.Planet
             internal object warSettlement;
             internal bool shouldExecute;
             internal WorldObject destinationTarget;
-            internal int destinationTile;
+            internal PlanetTile destinationTile;
         }
 
         public static RocketTasker<ContextStorage> tasker = new RocketTasker<ContextStorage>();
@@ -425,7 +425,7 @@ namespace RimWar.Planet
                             //Messages.Message("No longer able to interact with " + ctd.caravanTarget.Name + " - clearing target.", MessageTypeDefOf.RejectInput);
                             this.caravanTargetData.Remove(ctd);
                         }
-                        if (ctd.CaravanTargetTile != 0 && ctd.CaravanDestination != ctd.CaravanTargetTile)
+                        if (ctd.CaravanTargetTile.Valid && ctd.CaravanDestination != ctd.CaravanTargetTile)
                         {
                             ctd.caravan.pather.StartPath(ctd.CaravanTargetTile, ctd.caravan.pather.ArrivalAction, true);
                         }
@@ -1949,13 +1949,13 @@ namespace RimWar.Planet
                 {
                     targetRange = Mathf.RoundToInt(targetRange * .8f);
                 }
-                List<int> tmpTiles = new List<int>();
+                List<PlanetTile> tmpTiles = new List<PlanetTile>();
                 tmpTiles.Clear();
                 for (int i = 0; i < 5; i++)
                 {
-                    PlanetTile tile = -1;
+                    PlanetTile tile = PlanetTile.Invalid;
                     TileFinder.TryFindPassableTileWithTraversalDistance(parentSettlement.Tile, 10, targetRange, out tile);
-                    if (tile != -1)
+                    if (tile.Valid)
                     {
                         Tile t = Find.WorldGrid[tile];
                         if (t.PrimaryBiome != null && !t.PrimaryBiome.isExtremeBiome && t.PrimaryBiome.canBuildBase)
@@ -1968,8 +1968,8 @@ namespace RimWar.Planet
                 {
                     for (int i = 0; i < tmpTiles.Count; i++)
                     {
-                        int destinationTile = tmpTiles[i];
-                        if (destinationTile > 0 && (Find.WorldGrid.ApproxDistanceInTiles(parentSettlement.Tile, destinationTile) <= targetRange || ignoreRestrictions))
+                        PlanetTile destinationTile = tmpTiles[i];
+                        if (destinationTile.Valid && (Find.WorldGrid.ApproxDistanceInTiles(parentSettlement.Tile, destinationTile) <= targetRange || ignoreRestrictions))
                         {
                             List<WorldObject> worldObjects = WorldUtility.GetWorldObjectsInRange(destinationTile, 10);
                             bool nearbySettlement = false;
@@ -2009,7 +2009,7 @@ namespace RimWar.Planet
         {
             Options.SettingsRef settingsRef = new Options.SettingsRef();
             bool shouldExecute = false;
-            int destinationTile = -1;
+            PlanetTile destinationTile = PlanetTile.Invalid;
             if (rwsComp.RimWarPoints > 500 || ignoreRestrictions)
             {
                 int targetRange = Mathf.Clamp(rwsComp.SettlementScanRange, 11, Mathf.Max((int)settingsRef.maxSettelementScanRange, 12));
@@ -2021,13 +2021,13 @@ namespace RimWar.Planet
                 {
                     targetRange = Mathf.RoundToInt(targetRange * .8f);
                 }
-                List<int> tmpTiles = new List<int>();
+                List<PlanetTile> tmpTiles = new List<PlanetTile>();
                 tmpTiles.Clear();
                 for (int i = 0; i < 5; i++)
                 {
-                    PlanetTile tile = -1;
+                    PlanetTile tile = PlanetTile.Invalid;
                     TileFinder.TryFindPassableTileWithTraversalDistance(parentSettlement.Tile, 10, targetRange, out tile);
-                    if (tile != -1)
+                    if (tile.Valid)
                     {
                         Tile t = Find.WorldGrid[tile];
                         if (t.PrimaryBiome != null && !t.PrimaryBiome.isExtremeBiome && t.PrimaryBiome.canBuildBase)

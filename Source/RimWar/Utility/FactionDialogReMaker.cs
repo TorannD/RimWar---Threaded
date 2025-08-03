@@ -545,7 +545,7 @@ namespace RimWar.Utility
             string reason = "GoodwillChangedReason_RequestedMilitaryAid".Translate();
             faction.TryAffectGoodwillWith(ofPlayer, -callRelationsCost, canSendMessage, true, HistoryEventDefOf.RequestedMilitaryAid);
             sendingSettlement.GetComponent<RimWarSettlementComp>().RimWarPoints -= pts;
-            WorldUtility.CreateWarObjectOfType(rwo, pts, rwd, sendingSettlement, sendingSettlement.Tile, Find.WorldObjects.SettlementAt(map.Tile), WorldObjectDefOf.Settlement);            
+            WorldUtility.CreateWarObjectOfType(rwo, pts, rwd, sendingSettlement, sendingSettlement.Tile, Find.WorldObjects.SettlementAt(map.Tile), WorldObjectDefOf.Settlement, PlanetTile.Invalid);            
         }
 
         public static DiaNode FightersSent(Faction faction, Pawn negotiator)

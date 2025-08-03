@@ -24,7 +24,7 @@ namespace RimWar.Planet
         //public Faction fac = null;
         //public RimWarData rwd = null;
         
-        public int CaravanTile
+        public PlanetTile CaravanTile
         {
             get
             {
@@ -36,7 +36,7 @@ namespace RimWar.Planet
             }
         }
 
-        public int CaravanTargetTile
+        public PlanetTile CaravanTargetTile
         {
             get
             {
@@ -48,7 +48,7 @@ namespace RimWar.Planet
             }
         }
 
-        public int CaravanDestination
+        public PlanetTile CaravanDestination
         {
             get
             {
@@ -60,7 +60,7 @@ namespace RimWar.Planet
             }
         }
 
-        public int TargetDestination
+        public PlanetTile TargetDestination
         {
             get
             {

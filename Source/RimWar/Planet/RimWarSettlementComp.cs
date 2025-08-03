@@ -750,7 +750,7 @@ namespace RimWar.Planet
                         {
                             this.parent.Faction.TryAffectGoodwillWith(Faction.OfPlayer, relationsCost, true, true, RimWarDefOf.RW_UnitRequest);
                         }
-                        WorldUtility.CreateWarObjectOfType(new Trader(), (pointsCost * 2), this.RWD, this.parent as Settlement, this.parent.Tile, s, WorldObjectDefOf.Settlement);
+                        WorldUtility.CreateWarObjectOfType(new Trader(), (pointsCost * 2), this.RWD, this.parent as Settlement, this.parent.Tile, s, WorldObjectDefOf.Settlement, PlanetTile.Invalid);
                         return true;
                     }
                     else
@@ -790,7 +790,7 @@ namespace RimWar.Planet
                     {
                         this.parent.Faction.TryAffectGoodwillWith(Faction.OfPlayer, relationsCost, true, true, RimWarDefOf.RW_UnitRequest);
                     }
-                    WorldUtility.CreateWarObjectOfType(new Scout(), pointsCost * 2, this.RWD, this.parent as Settlement, this.parent.Tile, wo, wo.def);
+                    WorldUtility.CreateWarObjectOfType(new Scout(), pointsCost * 2, this.RWD, this.parent as Settlement, this.parent.Tile, wo, wo.def, PlanetTile.Invalid);
                     return true;
                 }
                 if (sendTypeDef == RimWarDefOf.RW_Warband)
@@ -806,7 +806,7 @@ namespace RimWar.Planet
                     {
                         this.parent.Faction.TryAffectGoodwillWith(Faction.OfPlayer, relationsCost, true, true, RimWarDefOf.RW_UnitRequest);
                     }
-                    WorldUtility.CreateWarObjectOfType(new Warband(), pointsCost * 2, this.RWD, this.parent as Settlement, this.parent.Tile, wo, wo.def);
+                    WorldUtility.CreateWarObjectOfType(new Warband(), pointsCost * 2, this.RWD, this.parent as Settlement, this.parent.Tile, wo, wo.def, PlanetTile.Invalid);
                     return true;
                 }
                 if (sendTypeDef == RimWarDefOf.RW_LaunchedWarband)
