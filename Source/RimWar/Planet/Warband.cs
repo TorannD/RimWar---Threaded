@@ -100,10 +100,9 @@ namespace RimWar.Planet
 
         //public override int NextSearchTickIncrement => Rand.Range(500, 600);
         //public override float ScanRange => 1f;
-
-        protected override void Tick()
+        protected override void TickInterval(int delta)
         {
-            base.Tick();            
+            base.TickInterval(delta);
         }
 
         public override void EngageNearbyCaravan(Caravan car)

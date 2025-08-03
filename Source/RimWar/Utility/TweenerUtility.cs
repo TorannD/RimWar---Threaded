@@ -26,7 +26,7 @@ namespace RimWar.Utility
             if (warObject.pather.Moving)
             {
                 float num = warObject.pather.IsNextTilePassable() ? (1f - warObject.pather.nextTileCostLeft / warObject.pather.nextTileCostTotal) : 0f;
-                int tileID = (warObject.pather.nextTile != warObject.Tile || warObject.pather.previousTileForDrawingIfInDoubt == -1) ? warObject.Tile : warObject.pather.previousTileForDrawingIfInDoubt;
+                PlanetTile tileID = (warObject.pather.nextTile != warObject.Tile || warObject.pather.previousTileForDrawingIfInDoubt == PlanetTile.Invalid) ? warObject.Tile : warObject.pather.previousTileForDrawingIfInDoubt;
                 return worldGrid.GetTileCenter(warObject.pather.nextTile) * num + worldGrid.GetTileCenter(tileID) * (1f - num);
             }
             return worldGrid.GetTileCenter(warObject.Tile);
@@ -42,7 +42,7 @@ namespace RimWar.Utility
             float d = 0.15f * Verse.Find.WorldGrid.AverageTileSize;
             if (!flag || warObject.pather.nextTile == warObject.pather.Destination)
             {
-                int num = (!flag) ? warObject.Tile : warObject.pather.nextTile;
+                PlanetTile num = (!flag) ? warObject.Tile : warObject.pather.nextTile;
                 int warObjectsCount = 0;
                 int warObjectsWithLowerIdCount = 0;
                 GetWarObjectsStandingAtOrAboutToStandAt(num, out warObjectsCount, out warObjectsWithLowerIdCount, warObject);
@@ -64,7 +64,7 @@ namespace RimWar.Utility
             return Vector3.zero;
         }
 
-        private static void GetWarObjectsStandingAtOrAboutToStandAt(int tile, out int warObjectsCount, out int warObjectsWithLowerIdCount, WarObject forWarObject)
+        private static void GetWarObjectsStandingAtOrAboutToStandAt(PlanetTile tile, out int warObjectsCount, out int warObjectsWithLowerIdCount, WarObject forWarObject)
         {
             warObjectsCount = 0;
             warObjectsWithLowerIdCount = 0;

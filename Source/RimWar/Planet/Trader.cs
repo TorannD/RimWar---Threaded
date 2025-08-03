@@ -86,9 +86,9 @@ namespace RimWar.Planet
 
         public override float ScanRange => 1.6f;
 
-        protected override void Tick()
+        protected override void TickInterval(int delta)
         {
-            base.Tick();            
+            base.TickInterval(delta);
         }
 
         public override void EngageNearbyCaravan(Caravan car)
@@ -127,7 +127,7 @@ namespace RimWar.Planet
         {            
             base.ImmediateAction(wo);            
         }
-
+        
         public override void ArrivalAction()
         {
             //Log.Message("trader arrival action with destiantion " + this.DestinationTarget);
@@ -212,7 +212,7 @@ namespace RimWar.Planet
                                     }
                                     this.Tile = tile;
                                     this.tweener.ResetTweenedPosToRoot();
-                                    this.pather.PatherTick();                                    
+                                    this.pather.PatherTick(1);                                    
                                     this.tweener.TweenerTick();
                                     this.pather.StopDead();
                                     this.pauseFor = 10000;
@@ -227,7 +227,7 @@ namespace RimWar.Planet
                                     }
                                     this.Tile = tile;
                                     this.tweener.ResetTweenedPosToRoot();
-                                    this.pather.PatherTick();
+                                    this.pather.PatherTick(1);
                                     this.tweener.TweenerTick();
                                     this.pather.StopDead();
                                     this.pauseFor = 30000;
@@ -241,7 +241,7 @@ namespace RimWar.Planet
                                         TileFinder.TryFindPassableTileWithTraversalDistance(this.Tile, 1, 1, out tile);
                                     }
                                     this.Tile = tile;
-                                    this.pather.PatherTick();
+                                    this.pather.PatherTick(1);
                                     this.tweener.ResetTweenedPosToRoot();
                                     this.tweener.TweenerTick();
                                     this.pather.StopDead();

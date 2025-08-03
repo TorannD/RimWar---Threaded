@@ -57,9 +57,9 @@ namespace RimWar.Planet
         //NextMoveTickIncrement (default is settings based)
         //ArrivalAction
 
-        protected override void Tick()
+        protected override void TickInterval(int delta)
         {
-            base.Tick();            
+            base.TickInterval(delta);
         }
 
         public override void ScanAction(float range)

@@ -37,7 +37,7 @@ namespace RimWar.Planet
         private RimWorld.Planet.Settlement parentSettlement = null;
         private int parentSettlementTile = -1;
         private WorldObject targetWorldObject = null;
-        private int destinationTile = -1;
+        private PlanetTile destinationTile = PlanetTile.Invalid;
         public int nextMoveTickIncrement = 0;
 
         public bool canReachDestination = true;
@@ -195,7 +195,7 @@ namespace RimWar.Planet
             Scribe_Values.Look<int>(ref this.warPointsInt, "warPointsInt", -1, false);
             Scribe_Values.Look<int>(ref this.pointDamageInt, "pointDamageInt", 0, false);
             Scribe_Values.Look<int>(ref this.parentSettlementTile, "parentSettlementTile", -1, false);
-            Scribe_Values.Look<int>(ref this.destinationTile, "destinationTile", -1, false);
+            Scribe_Values.Look<PlanetTile>(ref this.destinationTile, "destinationTile", PlanetTile.Invalid, false);
             Scribe_Deep.Look(ref pather, "pather", this);
             Scribe_References.Look<RimWorld.Planet.Settlement>(ref this.parentSettlement, "parentSettlement");
             Scribe_References.Look<WorldObject>(ref this.targetWorldObject, "targetWorldObject");
@@ -266,7 +266,7 @@ namespace RimWar.Planet
             }
         }
 
-        public int DestinationTile
+        public PlanetTile DestinationTile
         {
             get
             {
@@ -416,7 +416,7 @@ namespace RimWar.Planet
             get
             {
                 StringBuilder stringBuilder = new StringBuilder();
-                stringBuilder.Append("explination = warobject type and faction type"); //CaravanTicksPerMoveUtility.GetTicksPerMove(this, stringBuilder);
+                stringBuilder.Append("explanation = warobject type and faction type"); //CaravanTicksPerMoveUtility.GetTicksPerMove(this, stringBuilder);
                 return stringBuilder.ToString();
             }
         }
@@ -428,7 +428,7 @@ namespace RimWar.Planet
             get
             {
                 StringBuilder stringBuilder = new StringBuilder();
-                stringBuilder.Append("explination = warobject type and faction type"); //CaravanVisibilityCalculator.Visibility(this, stringBuilder);
+                stringBuilder.Append("explanation = warobject type and faction type"); //CaravanVisibilityCalculator.Visibility(this, stringBuilder);
                 return stringBuilder.ToString();
             }
         }
@@ -459,10 +459,9 @@ namespace RimWar.Planet
         //NextMoveTick
         //NextMoveTickIncrement (default is settings based)
         //ArrivalAction
-
-        protected override void Tick()
+        protected override void TickInterval(int delta)
         {
-            base.Tick();
+            base.TickInterval(delta);
             if(this.PointDamage > 0 && Find.TickManager.TicksGame % 1001 == 0)
             {
                 float damageSplit = (Rand.Range(.004f, .006f) * this.RimWarPoints);
@@ -501,7 +500,7 @@ namespace RimWar.Planet
                 if (GenTicks.TicksGame >= this.NextMoveTick)
                 {
                     NextMoveTick = GenTicks.TicksGame + NextMoveTickIncrement;
-                    pather.PatherTick();
+                    pather.PatherTick(delta);
                     tweener.TweenerTick();
                     if (this.DestinationReached)
                     {

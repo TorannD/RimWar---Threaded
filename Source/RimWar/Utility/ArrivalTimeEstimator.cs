@@ -21,10 +21,9 @@ namespace RimWar.Utility
                 }
                 //return CaravanArrivalTimeEstimator.EstimatedTicksToArrive(from, to, worldPath, 0, warObject.TicksPerMove, Verse.Find.TickManager.TicksAbs);
                 float distance = Find.WorldGrid.ApproxDistanceInTiles(from, to);
-                Log.Message("distance is " + distance);
-                float travelTimePerTile = warObject.MovementModifier;
-
-                return Mathf.RoundToInt(distance * travelTimePerTile);
+                float travelTimePerTile = 2500f/warObject.MovementModifier;
+                int travelTime = Mathf.RoundToInt(distance * travelTimePerTile);
+                return travelTime;
             }
         }
 

@@ -131,7 +131,7 @@ namespace RimWar.Planet
             this.warObject = warObject;
         }
 
-        public void PatherTick()
+        public void PatherTick(int delta)
         {
             if (moving && warObject.Tile == this.destTile)
             {
@@ -141,7 +141,7 @@ namespace RimWar.Planet
             {
                 if (nextTileCostLeft > 0f)
                 {
-                    nextTileCostLeft -= CostToPayThisTick();
+                    nextTileCostLeft -= CostToPayThisTick() * (float)delta;
                 }
                 else if (moving)
                 {
@@ -172,7 +172,7 @@ namespace RimWar.Planet
             moving = false;
             paused = false;
             nextTile = warObject.Tile;
-            previousTileForDrawingIfInDoubt = -1;
+            previousTileForDrawingIfInDoubt = PlanetTile.Invalid;
             nextTileCostLeft = 0f;
         }
 
@@ -406,7 +406,7 @@ namespace RimWar.Planet
             {
                 try
                 {
-                    int tileID = curPath.Peek(i);
+                    PlanetTile tileID = curPath.Peek(i);
                     if (Verse.Find.World.Impassable(tileID))
                     {
                         return true;
