@@ -15,7 +15,7 @@ namespace RimWar.Planet
 {
     public class SettlementUtility
     {
-        public static RimWorld.Planet.Settlement AddNewHome(int tile, Faction faction, WorldObjectDef cityDef = null)
+        public static RimWorld.Planet.Settlement AddNewHome(PlanetTile tile, Faction faction, WorldObjectDef cityDef = null)
         {
             if(cityDef == null)
             {
@@ -38,7 +38,7 @@ namespace RimWar.Planet
             }
         }
 
-        public static RimWorld.Planet.Settlement GenerateCity(int tile, Faction faction, WorldObjectDef def)
+        public static RimWorld.Planet.Settlement GenerateCity(PlanetTile tile, Faction faction, WorldObjectDef def)
         {
             City city = (City)WorldObjectMaker.MakeWorldObject(def);
             city.SetFaction(faction);

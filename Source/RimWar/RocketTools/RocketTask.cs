@@ -125,14 +125,14 @@ namespace RimWar.RocketTools
 
         public void Tick()
         {
-            try
-            {
-                WorldReachability_CanReach_Patch.FlushMessages();
-            }
-            catch
-            {
-                if (Prefs.LogVerbose) Log.Warning("RIMWAR: message stream intrupted");
-            }
+            //try
+            //{
+            //    WorldReachability_CanReach_Patch.FlushMessages();
+            //}
+            //catch
+            //{
+            //    if (Prefs.LogVerbose) Log.Warning("RIMWAR: message stream intrupted");
+            //}
 
             var remaining = new List<RocketTask<T>>();
             var startedCounter = 0;

@@ -703,7 +703,7 @@ namespace RimWar.Planet
         public void StartChoosingRequestDestination()
         {
             Find.WorldSelector.ClearSelection();
-            int tile = this.parent.Tile;
+            PlanetTile tile = this.parent.Tile;
             int maxRange = SettlementScanRange;
             Find.WorldTargeter.BeginTargeting(new Func<GlobalTargetInfo, bool>(ChooseWorldTarget), true, sendTypeDef.ExpandingIconTexture, false, delegate
             {
@@ -829,7 +829,7 @@ namespace RimWar.Planet
             return false;
         }
 
-        public string TargetingLabelGetter(GlobalTargetInfo target, int tile, int maxLaunchDistance)
+        public string TargetingLabelGetter(GlobalTargetInfo target, PlanetTile tile, int maxLaunchDistance)
         {
             if (!target.IsValid)
             {

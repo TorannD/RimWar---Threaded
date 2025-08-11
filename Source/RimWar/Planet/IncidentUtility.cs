@@ -1109,10 +1109,10 @@ namespace RimWar.Planet
             return silver;
         }
 
-        public static BattleSite CreateNewBattleSite(int tile, List<WarObject> wos)
+        public static BattleSite CreateNewBattleSite(PlanetTile tile, List<WarObject> wos)
         {
             tile = GetValidBattleSiteTile(tile);
-            if (tile != -1)
+            if (tile != PlanetTile.Invalid)
             {
                 BattleSite bs = (BattleSite)WorldObjectMaker.MakeWorldObject(RimWarDefOf.RW_BattleSite);
                 bs.Tile = tile;
@@ -1129,7 +1129,7 @@ namespace RimWar.Planet
             return null;
         }
 
-        public static int GetValidBattleSiteTile(PlanetTile tile)
+        public static PlanetTile GetValidBattleSiteTile(PlanetTile tile)
         {
             List<PlanetTile> validTiles = new List<PlanetTile>();
             validTiles.Clear();
@@ -1177,7 +1177,7 @@ namespace RimWar.Planet
                     return tmpTiles[i];
                 }
             }
-            return -1;
+            return PlanetTile.Invalid;
         }
 
         public static void ResolveCombat_Settlement(RimWarSettlementComp defender, WarObject attacker)

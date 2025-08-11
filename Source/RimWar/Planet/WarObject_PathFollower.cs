@@ -176,7 +176,7 @@ namespace RimWar.Planet
             nextTileCostLeft = 0f;
         }
 
-        private bool IsPassable(int tile)
+        private bool IsPassable(PlanetTile tile)
         {
             return !Verse.Find.World.Impassable(tile);
         }
@@ -250,6 +250,7 @@ namespace RimWar.Planet
             }
             else
             {
+                //Log.Message(this.warObject.Label + " curpath has " + curPath.NodeCount + " nodes remaining");
                 nextTile = curPath.ConsumeNextNode();
                 previousTileForDrawingIfInDoubt = PlanetTile.Invalid;
                 if (Verse.Find.World.Impassable(nextTile))
@@ -262,17 +263,17 @@ namespace RimWar.Planet
             }
         }
 
-        private int CostToMove(int start, int end)
+        private int CostToMove(PlanetTile start, PlanetTile end)
         {
             return CostToMove(warObject, start, end);
         }
 
-        public static int CostToMove(WarObject warObject, int start, int end, int? ticksAbs = default(int?))
+        public static int CostToMove(WarObject warObject, PlanetTile start, PlanetTile end, int? ticksAbs = default(int?))
         {
             return CostToMove(warObject.TicksPerMove, start, end, ticksAbs);
         }
 
-        public static int CostToMove(int warObjectTicksPerMove, int start, int end, int? ticksAbs = default(int?), bool perceivedStatic = false, StringBuilder explanation = null, string warObjectTicksPerMoveExplanation = null)
+        public static int CostToMove(int warObjectTicksPerMove, PlanetTile start, PlanetTile end, int? ticksAbs = default(int?), bool perceivedStatic = false, StringBuilder explanation = null, string warObjectTicksPerMoveExplanation = null)
         {
             if (start == end)
             {
@@ -309,7 +310,7 @@ namespace RimWar.Planet
             return value;
         }
 
-        public static bool IsValidFinalPushDestination(int tile)
+        public static bool IsValidFinalPushDestination(PlanetTile tile)
         {
             List<WorldObject> allWorldObjects = Verse.Find.WorldObjects.AllWorldObjects;
             for (int i = 0; i < allWorldObjects.Count; i++)
@@ -338,46 +339,53 @@ namespace RimWar.Planet
 
         private bool TrySetNewPath()
         {
+            //Log.Message("trystartnewpath");
             WorldPath worldPath = GenerateNewPath();
-            if (!worldPath.Found)
-            {
-                PatherFailed();
-                return false;
-            }
-            if (curPath != null)
-            {
-                curPath.ReleaseToPool();
-            }
+            //if (!worldPath.Found)
+            //{
+            //    PatherFailed();
+            //    return false;
+            //}
+            //if (curPath != null)
+            //{
+            //    curPath.ReleaseToPool();
+            //}
+            //Log.Message("new world path found with " + worldPath.NodeCount + " nodes");
             curPath = worldPath;
             return true;
         }
 
         private WorldPath GenerateNewPath()
         {
-            PlanetTile num = (moving && nextTile.Valid && IsNextTilePassable()) ? nextTile : warObject.Tile;
+            PlanetTile planetTile = (moving && nextTile.Valid && IsNextTilePassable()) ? nextTile : warObject.Tile;
             lastPathedTargetTile = destTile;
 
             //try
             //{
-                WorldPath worldPath = num.Layer.Pather.FindPath(num, destTile, null); // Verse.Find.WorldPathFinder.FindPath(num, destTile, null);
-                if (worldPath.Found && num != warObject.Tile)
+            WorldPath worldPath = planetTile.Layer.Pather.FindPath(planetTile, destTile, null); // Verse.Find.WorldPathFinder.FindPath(num, destTile, null);
+            //Log.Message("new world path generated with " + worldPath.NodeCount + " nodes");
+            if (worldPath.Found && planetTile != warObject.Tile)
+            {
+                //Log.Message("1");
+                if (worldPath.NodesLeftCount >= 2 && worldPath.Peek(1) == warObject.Tile)
                 {
-                    if (worldPath.NodesLeftCount >= 2 && worldPath.Peek(1) == warObject.Tile)
+                    //Log.Message("2");
+                    worldPath.ConsumeNextNode();
+                    if (moving)
                     {
-                        worldPath.ConsumeNextNode();
-                        if (moving)
-                        {
-                            previousTileForDrawingIfInDoubt = nextTile;
-                            nextTile = warObject.Tile;
-                            nextTileCostLeft = nextTileCostTotal - nextTileCostLeft;
-                        }
-                    }
-                    else
-                    {
-                        worldPath.AddNodeAtStart(warObject.Tile);
+                        //Log.Message("3");
+                        previousTileForDrawingIfInDoubt = nextTile;
+                        nextTile = warObject.Tile;
+                        nextTileCostLeft = nextTileCostTotal - nextTileCostLeft;
                     }
                 }
-                return worldPath;
+                else
+                {
+                    //Log.Message("4");
+                    worldPath.AddNodeAtStart(warObject.Tile);
+                }
+            }
+            return worldPath;
             //}
             //catch
             //{

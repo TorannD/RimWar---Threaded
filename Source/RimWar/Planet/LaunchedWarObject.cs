@@ -17,9 +17,9 @@ namespace RimWar.Planet
         private string nameInt;
         private int warPointsInt = -1;
 
-        public int destinationTile = -1;
+        public PlanetTile destinationTile = PlanetTile.Invalid;
         private bool arrived;
-        private int initialTile = -1;
+        private PlanetTile initialTile = PlanetTile.Invalid;
         private float traveledPct;
         private const float TravelSpeed = 0.00025f;
 
@@ -63,9 +63,9 @@ namespace RimWar.Planet
             Scribe_Values.Look(ref uniqueId, "uniqueId", 0);
             Scribe_Values.Look(ref nameInt, "name");
             Scribe_Values.Look<int>(ref this.warPointsInt, "warPointsInt", -1, false);
-            Scribe_Values.Look(ref destinationTile, "destinationTile", 0);
+            Scribe_Values.Look(ref destinationTile, "destinationTile", PlanetTile.Invalid);
             Scribe_Values.Look(ref arrived, "arrived", defaultValue: false);
-            Scribe_Values.Look(ref initialTile, "initialTile", 0);
+            Scribe_Values.Look(ref initialTile, "initialTile", PlanetTile.Invalid);
             Scribe_Values.Look(ref traveledPct, "traveledPct", 0f);
             Scribe_References.Look<RimWorld.Planet.Settlement>(ref this.parentSettlement, "parentSettlement");
             Scribe_References.Look<WorldObject>(ref this.targetWorldObject, "targetWorldObject");

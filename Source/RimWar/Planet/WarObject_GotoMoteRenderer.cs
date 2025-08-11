@@ -11,7 +11,7 @@ namespace RimWar.Planet
     [StaticConstructorOnStartup]
     public class WarObject_GotoMoteRenderer
     {
-        private int tile;
+        private PlanetTile tile;
 
         private float lastOrderedToTileTime = -0.51f;
 
@@ -47,7 +47,7 @@ namespace RimWar.Planet
             }
         }
 
-        public void OrderedToTile(int tile)
+        public void OrderedToTile(PlanetTile tile)
         {
             this.tile = tile;
             lastOrderedToTileTime = Time.time;

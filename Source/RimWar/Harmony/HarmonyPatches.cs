@@ -284,7 +284,7 @@ namespace RimWar.Harmony
             }
         }
 
-        public static void ShuttleArrived_SettlementHasAttackers_Postfix(List<ActiveTransporterInfo> pods, int tile, MapParent ___mapParent)
+        public static void ShuttleArrived_SettlementHasAttackers_Postfix(List<ActiveTransporterInfo> pods, PlanetTile tile, MapParent ___mapParent)
         {
             if (___mapParent != null && ___mapParent.HasMap)
             {

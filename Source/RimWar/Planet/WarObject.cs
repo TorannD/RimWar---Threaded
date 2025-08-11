@@ -35,7 +35,7 @@ namespace RimWar.Planet
         public bool interactable = true;
 
         private RimWorld.Planet.Settlement parentSettlement = null;
-        private int parentSettlementTile = -1;
+        private PlanetTile parentSettlementTile = PlanetTile.Invalid;
         private WorldObject targetWorldObject = null;
         private PlanetTile destinationTile = PlanetTile.Invalid;
         public int nextMoveTickIncrement = 0;
@@ -84,7 +84,7 @@ namespace RimWar.Planet
         {
             internal bool shouldExecute;
             internal WorldObject destinationTarget;
-            internal int destinationTile;
+            internal PlanetTile destinationTile;
         }
 
         //public static RocketTasker<ContextStorage> tasker = new RocketTasker<ContextStorage>();
@@ -194,7 +194,7 @@ namespace RimWar.Planet
             Scribe_Values.Look<bool>(ref this.playerNotified, "playerNotified", false, false);
             Scribe_Values.Look<int>(ref this.warPointsInt, "warPointsInt", -1, false);
             Scribe_Values.Look<int>(ref this.pointDamageInt, "pointDamageInt", 0, false);
-            Scribe_Values.Look<int>(ref this.parentSettlementTile, "parentSettlementTile", -1, false);
+            Scribe_Values.Look<PlanetTile>(ref this.parentSettlementTile, "parentSettlementTile", PlanetTile.Invalid, false);
             Scribe_Values.Look<PlanetTile>(ref this.destinationTile, "destinationTile", PlanetTile.Invalid, false);
             Scribe_Deep.Look(ref pather, "pather", this);
             Scribe_References.Look<RimWorld.Planet.Settlement>(ref this.parentSettlement, "parentSettlement");
@@ -218,14 +218,14 @@ namespace RimWar.Planet
                 {
                     if (this.parentSettlement.Faction != this.Faction || this.parentSettlement.Destroyed)
                     {
-                        this.parentSettlementTile = -1;
+                        this.parentSettlementTile = PlanetTile.Invalid;
                         this.parentSettlement = null;
                         FindParentSettlement();
                     }
                 }
                 else
                 {
-                    if (this.parentSettlementTile != -1)
+                    if (this.parentSettlementTile.Valid)
                     {
                         RimWorld.Planet.Settlement wo = Find.WorldObjects.SettlementAt(this.parentSettlementTile);
                         if (wo != null && wo.Faction == this.Faction)
@@ -233,7 +233,7 @@ namespace RimWar.Planet
                             this.parentSettlement = wo;
                             if (this.parentSettlement == null || this.parentSettlement.Destroyed)
                             {
-                                this.parentSettlementTile = -1;
+                                this.parentSettlementTile = PlanetTile.Invalid;
                             }
                         }
                     }
@@ -826,7 +826,7 @@ namespace RimWar.Planet
             tweener.ResetTweenedPosToRoot();
         }
 
-        public void PathToTargetTile(int tile)
+        public void PathToTargetTile(PlanetTile tile)
         {
             pather.StartPath(tile, true);
             tweener.ResetTweenedPosToRoot();

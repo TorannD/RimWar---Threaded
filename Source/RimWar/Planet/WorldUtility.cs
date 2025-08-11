@@ -205,7 +205,7 @@ namespace RimWar.Planet
 
         public static void ConvertSettlement(RimWorld.Planet.Settlement worldSettlement, RimWarData rwdFrom, RimWarData rwdTo, int points, int pointDamage = 0)
         {
-            int tile = worldSettlement.Tile;
+            PlanetTile tile = worldSettlement.Tile;
             if (worldSettlement != null && rwdFrom != null && rwdTo != null)
             {
                 worldSettlement.Destroy();
@@ -1163,7 +1163,7 @@ namespace RimWar.Planet
                         for (int j = 0; j < wosList.Count; j++)
                         {
                             RimWorld.Planet.Settlement settlement = wosList[j];
-                            int to = settlement.Tile;
+                            PlanetTile to = settlement.Tile;
                             //int ticksToArrive = Utility.ArrivalTimeEstimator.EstimatedTicksToArrive(from, to, 1);
                             //int tileDistance = Find.WorldGrid.TraversalDistanceBetween(from, to, false, range);
                             int tileDistance = (int)Find.WorldGrid.ApproxDistanceInTiles(from, to);
@@ -1757,7 +1757,7 @@ namespace RimWar.Planet
             return Mathf.RoundToInt(adjustedCost/2f);
         }
 
-        public static WorldObject ReturnCloserWorldObjectTo(WorldObject wo1, WorldObject wo2, int to)
+        public static WorldObject ReturnCloserWorldObjectTo(WorldObject wo1, WorldObject wo2, PlanetTile to)
         {
             float d1 = Find.WorldGrid.ApproxDistanceInTiles(wo1.Tile, to);
             float d2 = Find.WorldGrid.ApproxDistanceInTiles(wo2.Tile, to);
