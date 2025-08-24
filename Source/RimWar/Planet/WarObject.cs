@@ -581,9 +581,10 @@ namespace RimWar.Planet
                 {
                     for (int i = 0; i < worldObjects.Count; i++)
                     {
-                        WorldObject wo = worldObjects[i];
+                        WorldObject wo = worldObjects[i];                        
                         if (wo != null && !wo.Destroyed && wo.Faction != this.Faction && wo != this.DestinationTarget)
                         {
+                            //Log.Message(this.Label + " has " + wo.Label + " in range [" + range + "]");
                             if (wo is Caravan) //or rimwar caravan, or diplomat, or merchant; ignore scouts and settlements
                             {
                                 Caravan car = wo as Caravan;

@@ -357,8 +357,9 @@ namespace RimWar.Planet
 
         private WorldPath GenerateNewPath()
         {
+            //Log.Message("start path gen for " + this.warObject.Label + " cur tile: " + this.warObject.Tile + " next tile: " + this.warObject.pather.nextTile + " dest tile: " + this.warObject.DestinationTile);
             PlanetTile planetTile = (moving && nextTile.Valid && IsNextTilePassable()) ? nextTile : warObject.Tile;
-            lastPathedTargetTile = destTile;
+            lastPathedTargetTile = this.destTile;
 
             //try
             //{
@@ -385,6 +386,7 @@ namespace RimWar.Planet
                     worldPath.AddNodeAtStart(warObject.Tile);
                 }
             }
+            //Log.Message("end path gen for " + this.warObject.Label + " cur tile: " + this.warObject.Tile + " next tile: " + this.warObject.pather.nextTile + " dest tile: " + this.warObject.DestinationTile);
             return worldPath;
             //}
             //catch
