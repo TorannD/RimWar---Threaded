@@ -280,7 +280,7 @@ namespace RimWar.Planet
                                             rwsComp.RimWarPoints += Rand.Range(10, 100);
                                             this.globalActions++;
                                         }
-                                        bool requestedReinforcement = false;
+                                        //bool requestedReinforcement = false;
                                         if (rwsComp.ShouldRequestReinforcements && rwsComp.CanReinforce)
                                         {
                                             List<Settlement> reinforcementSettlements = rwsComp.NearbyFriendlySettlementsWithinRange(50);
@@ -360,7 +360,7 @@ namespace RimWar.Planet
                                     else
                                     {
                                         this.creationAttempts++;
-                                    }                                    
+                                    }
                                 }                                
                             }
                         }
@@ -1137,7 +1137,8 @@ namespace RimWar.Planet
                             if (rwsComp.RimWarPoints * .85f >= pts || ignoreRestrictions)
                             {
                                 WorldUtility.CreateWarband(pts, rwd, parentSettlement, parentSettlement.Tile, targetTown, WorldObjectDefOf.Settlement);
-                                rwsComp.RimWarPoints = rwsComp.RimWarPoints - WorldUtility.RelativePowerCostAdjustment(pts, rwd);
+                                // This costs around 150-200ms for this adjustment 
+                                //rwsComp.RimWarPoints -= WorldUtility.RelativePowerCostAdjustment(pts, rwd);
                                 if (targetTown.Faction == Faction.OfPlayer)
                                 {
                                     rwsComp.PlayerHeat = 0;
@@ -1148,7 +1149,8 @@ namespace RimWar.Planet
                         else if (rwsComp.RimWarPoints * .75f >= pts || ignoreRestrictions)
                         {
                             WorldUtility.CreateWarband(pts, rwd, parentSettlement, parentSettlement.Tile, targetTown, WorldObjectDefOf.Settlement);
-                            rwsComp.RimWarPoints = rwsComp.RimWarPoints - WorldUtility.RelativePowerCostAdjustment(pts, rwd);
+                            // This costs around 150-200ms for this adjustment 
+                            //rwsComp.RimWarPoints -= WorldUtility.RelativePowerCostAdjustment(pts, rwd);
                             if (targetTown.Faction == Faction.OfPlayer)
                             {
                                 rwsComp.PlayerHeat = 0;
@@ -1239,7 +1241,8 @@ namespace RimWar.Planet
                             if (rwsComp.RimWarPoints * .85f >= pts || ignoreRestrictions)
                             {
                                 WorldUtility.CreateWarband(pts, rwd, parentSettlement, parentSettlement.Tile, targetTown, WorldObjectDefOf.Settlement);
-                                rwsComp.RimWarPoints = rwsComp.RimWarPoints - WorldUtility.RelativePowerCostAdjustment(pts, rwd);
+                                // This costs around 150-200ms for this adjustment 
+                                //rwsComp.RimWarPoints -= WorldUtility.RelativePowerCostAdjustment(pts, rwd);
                                 if (targetTown.Faction == Faction.OfPlayer)
                                 {
                                     rwsComp.PlayerHeat = 0;
@@ -1255,7 +1258,8 @@ namespace RimWar.Planet
                         else if (rwsComp.RimWarPoints * .75f >= pts || ignoreRestrictions)
                         {
                             WorldUtility.CreateWarband(pts, rwd, parentSettlement, parentSettlement.Tile, targetTown, WorldObjectDefOf.Settlement);
-                            rwsComp.RimWarPoints = rwsComp.RimWarPoints - WorldUtility.RelativePowerCostAdjustment(pts, rwd);
+                            // This costs around 150-200ms for this adjustment 
+                            //rwsComp.RimWarPoints -= WorldUtility.RelativePowerCostAdjustment(pts, rwd);
                             if (targetTown.Faction == Faction.OfPlayer)
                             {
                                 rwsComp.PlayerHeat = 0;
@@ -1405,7 +1409,8 @@ namespace RimWar.Planet
                         if (rwsComp.RimWarPoints * .8f >= pts || ignoreRestrictions)
                         {
                             WorldUtility.CreateLaunchedWarband(pts, rwd, parentSettlement, parentSettlement.Tile, targetTown, WorldObjectDefOf.Settlement);
-                            rwsComp.RimWarPoints = rwsComp.RimWarPoints - WorldUtility.RelativePowerCostAdjustment(pts, rwd);
+                            // This costs around 150-200ms for this adjustment 
+                            //rwsComp.RimWarPoints -= WorldUtility.RelativePowerCostAdjustment(pts, rwd);
                             if (targetTown.Faction == Faction.OfPlayer)
                             {
                                 rwsComp.PlayerHeat = 0;
@@ -1422,7 +1427,8 @@ namespace RimWar.Planet
                     {
                         //Log.Message("launching warband from " + rwsComp.RimWorld_Settlement.Name);
                         WorldUtility.CreateLaunchedWarband(pts, rwd, parentSettlement, parentSettlement.Tile, targetTown, WorldObjectDefOf.Settlement);
-                        rwsComp.RimWarPoints = rwsComp.RimWarPoints - WorldUtility.RelativePowerCostAdjustment(pts, rwd);
+                        // This costs around 150-200ms for this adjustment 
+                        //rwsComp.RimWarPoints -= WorldUtility.RelativePowerCostAdjustment(pts, rwd);
                         if (targetTown.Faction == Faction.OfPlayer)
                         {
                             rwsComp.PlayerHeat = 0;
@@ -1507,7 +1513,8 @@ namespace RimWar.Planet
                         if (rwsComp.RimWarPoints * .8f >= pts || ignoreRestrictions)
                         {
                             WorldUtility.CreateLaunchedWarband(pts, rwd, parentSettlement, parentSettlement.Tile, targetTown, WorldObjectDefOf.Settlement);
-                            rwsComp.RimWarPoints = rwsComp.RimWarPoints - WorldUtility.RelativePowerCostAdjustment(pts, rwd);
+                            // This costs around 150-200ms for this adjustment 
+                            //rwsComp.RimWarPoints -= WorldUtility.RelativePowerCostAdjustment(pts, rwd);
                             if (targetTown.Faction == Faction.OfPlayer)
                             {
                                 rwsComp.PlayerHeat = 0;
@@ -1524,7 +1531,8 @@ namespace RimWar.Planet
                     {
                         //Log.Message("launching warband from " + rwsComp.RimWorld_Settlement.Name);
                         WorldUtility.CreateLaunchedWarband(pts, rwd, parentSettlement, parentSettlement.Tile, targetTown, WorldObjectDefOf.Settlement);
-                        rwsComp.RimWarPoints = rwsComp.RimWarPoints - WorldUtility.RelativePowerCostAdjustment(pts, rwd);
+                        // This costs around 150-200ms for this adjustment 
+                        //rwsComp.RimWarPoints -= WorldUtility.RelativePowerCostAdjustment(pts, rwd);
                         if (targetTown.Faction == Faction.OfPlayer)
                         {
                             rwsComp.PlayerHeat = 0;
@@ -1605,7 +1613,8 @@ namespace RimWar.Planet
                     Caravan playerCaravan = wo as Caravan;
                     int pts = WorldUtility.CalculateScoutMissionPoints(rwd, Mathf.RoundToInt(playerCaravan.PlayerWealthForStoryteller / 200));
                     WorldUtility.CreateScout(pts, rwd, parentSettlement, parentSettlement.Tile, wo, WorldObjectDefOf.Caravan);
-                    rwsComp.RimWarPoints = rwsComp.RimWarPoints - WorldUtility.RelativePowerCostAdjustment(pts, rwd);
+                    // This costs around 150-200ms for this adjustment 
+                    //rwsComp.RimWarPoints -= WorldUtility.RelativePowerCostAdjustment(pts, rwd);
                     rwsComp.PlayerHeat = 0;
                     minimumHeatForPlayerAction += GetHeatForAction(RimWarAction.ScoutingParty);
                 }
@@ -1618,7 +1627,8 @@ namespace RimWar.Planet
                         pts = Mathf.RoundToInt(pts * 1.2f);
                     }
                     WorldUtility.CreateScout(pts, rwd, parentSettlement, parentSettlement.Tile, wo, RimWarDefOf.RW_WarObject);
-                    rwsComp.RimWarPoints = rwsComp.RimWarPoints - WorldUtility.RelativePowerCostAdjustment(pts, rwd);
+                    // This costs around 150-200ms for this adjustment 
+                    //rwsComp.RimWarPoints -= WorldUtility.RelativePowerCostAdjustment(pts, rwd);
                     if (wo.Faction == Faction.OfPlayer || WorldUtility.IsVassalFaction(wo.Faction))
                     {
                         rwsComp.PlayerHeat = 0;
@@ -1634,7 +1644,8 @@ namespace RimWar.Planet
                         pts = Mathf.RoundToInt(pts * 1.2f);
                     }
                     WorldUtility.CreateScout(pts, rwd, parentSettlement, parentSettlement.Tile, wo, WorldObjectDefOf.Settlement);
-                    rwsComp.RimWarPoints = rwsComp.RimWarPoints - WorldUtility.RelativePowerCostAdjustment(pts, rwd);
+                    // This costs around 150-200ms for this adjustment 
+                    //rwsComp.RimWarPoints -= WorldUtility.RelativePowerCostAdjustment(pts, rwd);
                     if (wo.Faction == Faction.OfPlayer)
                     {
                         rwsComp.PlayerHeat = 0;
@@ -1841,10 +1852,10 @@ namespace RimWar.Planet
                     Caravan playerCaravan = wo as Caravan;
                     int pts = WorldUtility.CalculateScoutMissionPoints(rwd, Mathf.RoundToInt(playerCaravan.PlayerWealthForStoryteller / 200));
                     WorldUtility.CreateScout(pts, rwd, parentSettlement, parentSettlement.Tile, wo, WorldObjectDefOf.Caravan);
-                    rwsComp.RimWarPoints = rwsComp.RimWarPoints - WorldUtility.RelativePowerCostAdjustment(pts, rwd);
+                    // This costs around 150-200ms for this adjustment 
+                    //rwsComp.RimWarPoints -= WorldUtility.RelativePowerCostAdjustment(pts, rwd);
                     rwsComp.PlayerHeat = 0;
                     minimumHeatForPlayerAction += GetHeatForAction(RimWarAction.ScoutingParty);
-
                 }
                 else if (wo is WarObject)
                 {
@@ -1855,7 +1866,8 @@ namespace RimWar.Planet
                         pts = Mathf.RoundToInt(pts * 1.2f);
                     }
                     WorldUtility.CreateScout(pts, rwd, parentSettlement, parentSettlement.Tile, wo, RimWarDefOf.RW_WarObject);
-                    rwsComp.RimWarPoints = rwsComp.RimWarPoints - WorldUtility.RelativePowerCostAdjustment(pts, rwd);
+                    // This costs around 150-200ms for this adjustment 
+                    //rwsComp.RimWarPoints -= WorldUtility.RelativePowerCostAdjustment(pts, rwd);
                     if (wo.Faction == Faction.OfPlayer || WorldUtility.IsVassalFaction(wo.Faction))
                     {
                         rwsComp.PlayerHeat = 0;
@@ -1871,7 +1883,8 @@ namespace RimWar.Planet
                         pts = Mathf.RoundToInt(pts * 1.2f);
                     }
                     WorldUtility.CreateScout(pts, rwd, parentSettlement, parentSettlement.Tile, wo, WorldObjectDefOf.Settlement);
-                    rwsComp.RimWarPoints = rwsComp.RimWarPoints - WorldUtility.RelativePowerCostAdjustment(pts, rwd);
+                    // This costs around 150-200ms for this adjustment 
+                    //rwsComp.RimWarPoints -= WorldUtility.RelativePowerCostAdjustment(pts, rwd);
                     if (wo.Faction == Faction.OfPlayer)
                     {
                         rwsComp.PlayerHeat = 0;
@@ -2001,7 +2014,8 @@ namespace RimWar.Planet
             {
                 int pts = Mathf.RoundToInt(Rand.Range(.4f, .6f) * 500);
                 WorldUtility.CreateSettler(pts, rwd, parentSettlement, parentSettlement.Tile, destinationTile, null);
-                rwsComp.RimWarPoints = rwsComp.RimWarPoints - WorldUtility.RelativePowerCostAdjustment(pts, rwd);
+                // This costs around 150-200ms for this adjustment 
+                //rwsComp.RimWarPoints -= WorldUtility.RelativePowerCostAdjustment(pts, rwd);
             }
         }
 
@@ -2066,7 +2080,8 @@ namespace RimWar.Planet
             {
                 int pts = Mathf.RoundToInt(Rand.Range(.4f, .6f) * 500);
                 WorldUtility.CreateSettler(pts, rwd, parentSettlement, parentSettlement.Tile, destinationTile, null);
-                rwsComp.RimWarPoints = rwsComp.RimWarPoints - WorldUtility.RelativePowerCostAdjustment(pts, rwd);
+                // This costs around 150-200ms for this adjustment 
+                //rwsComp.RimWarPoints -= WorldUtility.RelativePowerCostAdjustment(pts, rwd);
             }
         }
 
@@ -2180,7 +2195,8 @@ namespace RimWar.Planet
                     if (maxPts >= pts || ignoreRestrictions)
                     {
                         Trader tdr = WorldUtility.CreateTrader(pts, rwd, parentSettlement, parentSettlement.Tile, targetTown, WorldObjectDefOf.Settlement);
-                        rwsComp.RimWarPoints = rwsComp.RimWarPoints - WorldUtility.RelativePowerCostAdjustment(pts, rwd);
+                        // This costs around 150-200ms for this adjustment 
+                        //rwsComp.RimWarPoints -= WorldUtility.RelativePowerCostAdjustment(pts, rwd);
                         if (targetTown.Faction == Faction.OfPlayer)
                         {
                             rwsComp.PlayerHeat = 0;
@@ -2254,7 +2270,8 @@ namespace RimWar.Planet
                     if (maxPts >= pts || ignoreRestrictions)
                     {
                         Trader tdr = WorldUtility.CreateTrader(pts, rwd, parentSettlement, parentSettlement.Tile, targetTown, WorldObjectDefOf.Settlement);
-                        rwsComp.RimWarPoints = rwsComp.RimWarPoints - WorldUtility.RelativePowerCostAdjustment(pts, rwd);
+                        // This costs around 150-200ms for this adjustment 
+                        //rwsComp.RimWarPoints -= WorldUtility.RelativePowerCostAdjustment(pts, rwd);
                         if (targetTown.Faction == Faction.OfPlayer)
                         {
                             rwsComp.PlayerHeat = 0;
@@ -2374,7 +2391,8 @@ namespace RimWar.Planet
                     {
                         //Log.Message("sending warband from " + rwsComp.RimWorld_Settlement.Name);
                         WorldUtility.CreateDiplomat(pts, rwd, parentSettlement, parentSettlement.Tile, targetTown, WorldObjectDefOf.Settlement);
-                        rwsComp.RimWarPoints = rwsComp.RimWarPoints - WorldUtility.RelativePowerCostAdjustment(pts, rwd);
+                        // This costs around 150-200ms for this adjustment 
+                        //rwsComp.RimWarPoints -= WorldUtility.RelativePowerCostAdjustment(pts, rwd);
                         if (targetTown.Faction == Faction.OfPlayer)
                         {
                             rwsComp.PlayerHeat = 0;
@@ -2424,7 +2442,8 @@ namespace RimWar.Planet
                     {
                         //Log.Message("sending warband from " + rwsComp.RimWorld_Settlement.Name);
                         WorldUtility.CreateDiplomat(pts, rwd, parentSettlement, parentSettlement.Tile, targetTown, WorldObjectDefOf.Settlement);
-                        rwsComp.RimWarPoints = rwsComp.RimWarPoints - WorldUtility.RelativePowerCostAdjustment(pts, rwd);
+                        // This costs around 150-200ms for this adjustment 
+                        //rwsComp.RimWarPoints -= WorldUtility.RelativePowerCostAdjustment(pts, rwd);
                         if (targetTown.Faction == Faction.OfPlayer)
                         {
                             rwsComp.PlayerHeat = 0;
@@ -2503,7 +2522,8 @@ namespace RimWar.Planet
                     {
                         int pts = Mathf.RoundToInt(.4f * rwsComp.RimWarPoints);
                         Trader tdr = WorldUtility.CreateTrader(pts, rwd, parentSettlement, parentSettlement.Tile, targetTown, WorldObjectDefOf.Settlement);
-                        rwsComp.RimWarPoints = rwsComp.RimWarPoints - WorldUtility.RelativePowerCostAdjustment(pts, rwd);
+                        // This costs around 150-200ms for this adjustment 
+                        //rwsComp.RimWarPoints -= WorldUtility.RelativePowerCostAdjustment(pts, rwd);
                         rwsComp.bonusGrowthCount += Mathf.RoundToInt((float)pts / 10f);
                     }                    
                 }
