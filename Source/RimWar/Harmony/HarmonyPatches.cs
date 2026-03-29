@@ -29,6 +29,7 @@ namespace RimWar.Harmony
     [StaticConstructorOnStartup]
     public class RimWarMod : Mod
     {
+        public static int RimpointsPerGift = 90;
         private static readonly Type patchType = typeof(RimWarMod);
 
         public RimWarMod(ModContentPack content) : base(content)
@@ -99,11 +100,11 @@ namespace RimWar.Harmony
 
             //Prefix
 
-            //harmonyInstance.Patch(AccessTools.Method(typeof(FactionGiftUtility), "GiveGift", new Type[]
-            //    {
-            //        typeof(List<ActiveDropPodInfo>),
-            //        typeof(Settlement)
-            //    }, null), new HarmonyMethod(patchType, "GivePodGiftAsRimWarPoints_Prefix", null), null, null);
+            harmonyInstance.Patch(AccessTools.Method(typeof(FactionGiftUtility), "GiveGift", new Type[]
+                {
+                    typeof(List<ActiveTransporterInfo>),
+                    typeof(Settlement)
+                }, null), new HarmonyMethod(patchType, "GivePodGiftAsRimWarPoints_Prefix", null), null, null);
             harmonyInstance.Patch(AccessTools.Method(typeof(FactionGiftUtility), "GiveGift", new Type[]
                 {
                     typeof(List<Tradeable>),
@@ -192,39 +193,28 @@ namespace RimWar.Harmony
         //    }
         //}
 
-        //public static bool GivePodGiftAsRimWarPoints_Prefix(List<ActiveDropPodInfo> pods, Settlement giveTo)
-        //{            
-        //    if(giveTo.Faction.PlayerRelationKind == FactionRelationKind.Ally)
-        //    {                
-        //        RimWarSettlementComp rwsc = giveTo.GetComponent<RimWarSettlementComp>();
-        //        if(rwsc != null)
-        //        {
-        //            int goodwillChange = FactionGiftUtility.GetGoodwillChange(pods.Cast<IThingHolder>(), giveTo);
-        //            rwsc.RimWarPoints += goodwillChange * 100;
-        //            return false;
-        //        }
-        //        else
-        //        {
-        //            return true;
-        //        }
-        //    }
-        //    return true;
-        //}
+        public static bool GivePodGiftAsRimWarPoints_Prefix(List<ActiveTransporterInfo> pods, Settlement giveTo)
+        {              
+            RimWarSettlementComp rwsc = giveTo.GetComponent<RimWarSettlementComp>();
+            if(rwsc != null)
+            {
+                int goodwillChange = FactionGiftUtility.GetGoodwillChange(pods.Cast<IThingHolder>(), giveTo);
+                rwsc.RimWarPoints += goodwillChange * RimWarMod.RimpointsPerGift;
+            }
+           
+            return true;
+        }
 
         public static bool GiveGiftAsRimWarPoints_Prefix(List<Tradeable> tradeables, Faction giveTo, GlobalTargetInfo lookTarget)
         {
-            if (giveTo.PlayerRelationKind == FactionRelationKind.Ally)
+            Settlement s = Find.WorldObjects.SettlementAt(lookTarget.Tile);
+            if (s != null)
             {
-                Settlement s = Find.WorldObjects.SettlementAt(lookTarget.Tile);
-                if(s != null)
+                RimWarSettlementComp rwsc = s.GetComponent<RimWarSettlementComp>();
+                if (rwsc != null)
                 {
-                    RimWarSettlementComp rwsc = s.GetComponent<RimWarSettlementComp>();
-                    if (rwsc != null)
-                    {
-                        int goodwillChange = FactionGiftUtility.GetGoodwillChange(tradeables, giveTo);
-                        rwsc.RimWarPoints += goodwillChange * 90;
-                        return false;
-                    }
+                    int goodwillChange = FactionGiftUtility.GetGoodwillChange(tradeables, giveTo);
+                    rwsc.RimWarPoints += goodwillChange * RimWarMod.RimpointsPerGift;
                 }
             }
             return true;
@@ -944,7 +934,8 @@ namespace RimWar.Harmony
             Options.SettingsRef settingsRef = new Options.SettingsRef();
             if (settingsRef.restrictEvents)
             {
-                if (__instance != null && __instance.def.defName != "VisitorGroup" && __instance.def.defName != "VisitorGroupMax" && !__instance.def.defName.Contains("Cult") && parms.quest == null &&
+                if (__instance != null && __instance.def.defName != "VisitorGroup" && __instance.def.defName != "VisitorGroupMax" &&
+                    !__instance.def.defName.Contains("Cult") && !__instance.def.defName.Contains("Salvagers") && parms.quest == null &&
                     !parms.forced && !__instance.def.workerClass.ToString().StartsWith("Rumor_Code") && !(parms.faction != null && parms.faction.Hidden))
                 {
                     __result = false;
@@ -960,7 +951,8 @@ namespace RimWar.Harmony
             Options.SettingsRef settingsRef = new Options.SettingsRef();
             if (settingsRef.restrictEvents)
             {
-                if (__instance != null && __instance.def.defName != "VisitorGroup" && __instance.def.defName != "VisitorGroupMax" && !__instance.def.defName.Contains("Cult") && parms.quest == null &&
+                if (__instance != null && __instance.def.defName != "VisitorGroup" && __instance.def.defName != "VisitorGroupMax" &&
+                    !__instance.def.defName.Contains("Cult") && !__instance.def.defName.Contains("Salvagers") && parms.quest == null &&
                     !parms.forced && !__instance.def.workerClass.ToString().StartsWith("Rumor_Code") && !(parms.faction != null && parms.faction.Hidden))
                 {
                     __result = false;
@@ -976,7 +968,8 @@ namespace RimWar.Harmony
             Options.SettingsRef settingsRef = new Options.SettingsRef();
             if (settingsRef.restrictEvents)
             {
-                if (__instance != null && __instance.def.defName != "VisitorGroup" && __instance.def.defName != "VisitorGroupMax" && !__instance.def.defName.Contains("Cult") && parms.quest == null &&
+                if (__instance != null && __instance.def.defName != "VisitorGroup" && __instance.def.defName != "VisitorGroupMax" &&
+                    !__instance.def.defName.Contains("Cult") && !__instance.def.defName.Contains("Salvagers") && parms.quest == null &&
                     !parms.forced && !__instance.def.workerClass.ToString().StartsWith("Rumor_Code") && !(parms.faction != null && parms.faction.Hidden))
                 {
                     __result = false;
@@ -1014,8 +1007,9 @@ namespace RimWar.Harmony
             Options.SettingsRef settingsRef = new Options.SettingsRef();
             if (settingsRef.restrictEvents)
             {
-                if (__instance != null && __instance.def.defName != "VisitorGroup" && __instance.def.defName != "VisitorGroupMax" && !__instance.def.defName.Contains("Cult") && parms.quest == null &&
-                    !parms.forced && !__instance.def.workerClass.ToString().StartsWith("Rumor_Code"))
+                if (__instance != null && __instance.def.defName != "VisitorGroup" && __instance.def.defName != "VisitorGroupMax" &&
+                    !__instance.def.defName.Contains("Cult") && !__instance.def.defName.Contains("Salvagers") && !__instance.def.defName.Contains("Mechanoids") &&
+                    parms.quest == null && !parms.forced && !__instance.def.workerClass.ToString().StartsWith("Rumor_Code"))
                 { 
                     if(parms.faction != null)
                     {
@@ -1024,7 +1018,7 @@ namespace RimWar.Harmony
                             return true;
                         }
                     }
-                    if (__instance.def == IncidentDefOf.RaidEnemy || __instance.def == IncidentDefOf.RaidFriendly)
+                    if (__instance.def == IncidentDefOf.RaidEnemy || __instance.def == IncidentDefOf.RaidFriendly || __instance.def == IncidentDefOf.TraderCaravanArrival)
                     {
                         __result = false;
 
@@ -1066,6 +1060,12 @@ namespace RimWar.Harmony
         {
             private static void Postfix(Pawn negotiator, Faction faction, ref DiaNode __result)
             {
+                // Do not allow custom options in space
+                if (negotiator.Map.TileInfo.Layer == Find.WorldGrid.Orbit)
+                {
+                    return;
+                }
+
                 List<DiaOption> removeList = new List<DiaOption>();
                 removeList.Clear();
                 foreach (DiaOption x in __result.options)
